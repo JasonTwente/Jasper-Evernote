@@ -3,6 +3,9 @@ Installation Steps:
 1.  Run:
         - pip install evernote==1.23.2
         - pip install hashlib
+        - python -c 'from evernote.api.client import EvernoteClient'
+        
+    If the last line runs and quietly exits, you’re ready to go.
         
 2.  Go to https://www.evernote.com/api/DeveloperToken.action and get your developer token. (one year access)
 
