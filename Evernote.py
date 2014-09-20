@@ -1,3 +1,4 @@
+# coding=utf-8
 import hashlib
 import binascii
 import evernote.edam.userstore.constants as UserStoreConstants
@@ -9,58 +10,48 @@ import sys
 import time
 import re
 
-WORDS = ["NOTE"] 
+# Written by Jason van Eunen - jasonvaneunen.com
+
+
+WORDS = ["NOTE"]
 
 PRIORITY = 1
 
-def writeNote(mic,api):
-	note = Types.Note()
-	note.title = "Jasper Note"
-	
-# Jasper listens to the note of the user
-	mic.say("What would you like me to write down?")
-	NotetobeWrited = mic.activeListen()
-	
-# The content of an Evernote note is represented using Evernote Markup Language
-# (ENML). The full ENML specification can be found in the Evernote API Overview
-# at http://dev.evernote.com/documentation/cloud/chapters/ENML.php
-	note.content = '<?xml version="1.0" encoding="UTF-8"?>'
-	note.content += '<!DOCTYPE en-note SYSTEM ' \
-    '"http://xml.evernote.com/pub/enml2.dtd">'
-	note.content += '<en-note>Note:<br/>'
-	note.content += ' + NotetobeWrited + '
-	note.content += '</en-note>'
-	
-# Finally, send the new note to Evernote using the createNote method
-# The new Note object that is returned will contain server-generated
-# attributes such as the new note's unique GUID.
 
-	created_note = note_store.createNote(note)
-	mic.say("I successfully wrote down your note.")
-	
 def handle(text, mic, profile):
 
-# Real applications authenticate with Evernote using OAuth, but for the
-# purpose of exploring the API, you can get a developer token that allows
-# you to access your own Evernote account. To get a developer token, visit
-# https://sandbox.evernote.com/api/DeveloperToken.action hollandtester123@live.com
+        auth_token = profile["EVERNOTE_TOKEN"]
 
-	auth_token = profile["EVERNOTE_TOKEN"]
-	
-	client = EvernoteClient(token=auth_token, sandbox=False)
-	user_store = client.get_user_store()
-	user = userStore.getUser()
+        client = EvernoteClient(token=auth_token, sandbox=False)
+        user_store = client.get_user_store()
+        note_store = client.get_note_store()
 
-	if bool(re.search(r'\Note\b', text, re.IGNORECASE)):
-		writeNote(mic, api)
-		
+        if bool(re.search(r'\Note\b', text, re.IGNORECASE)):
+                writeNote(text, mic, note_store)
+
+
+
+def writeNote(text, mic, note_store):
+        note = Types.Note()						# Creates a new note
+        note.title = "Jasper Note"
+
+        mic.say("What would you like me to write down?")
+        theNote = mic.activeListen()					# Listens to the input and stores it
+
+        note.content = '<?xml version="1.0" encoding="UTF-8"?>'
+        note.content += '<!DOCTYPE en-note SYSTEM ' \
+    '"http://xml.evernote.com/pub/enml2.dtd">'
+        note.content += '<en-note>Note:<br/>'
+        note.content += ('%s' % theNote)
+        note.content += '</en-note>'
+
+        created_note = note_store.createNote(note)			# Stores the new note in Evernote
+        mic.say("I successfully wrote down your note.")
+
 def isValid(text):
-	noteBool = bool(re.search(r'\Note\b', text, re.IGNORECASE))
-	
-	if noteBool:
-		return noteBool
-	else:
-		return False
-	
-	
-	
+        noteBool = bool(re.search(r'\Note\b', text, re.IGNORECASE))
+
+        if noteBool:
+                return noteBool
+        else:
+                return False
