@@ -29,8 +29,6 @@ def handle(text, mic, profile):
         if bool(re.search(r'\Note\b', text, re.IGNORECASE)):
                 writeNote(text, mic, note_store)
 
-
-
 def writeNote(text, mic, note_store):
         note = Types.Note()						# Creates a new note
         note.title = "Jasper Note"
