@@ -45,13 +45,9 @@ def handle(text, mic, profile):
 # you to access your own Evernote account. To get a developer token, visit
 # https://sandbox.evernote.com/api/DeveloperToken.action hollandtester123@live.com
 
-	auth_token = "S=s1:U=8f7e3:E=14fe2136603:C=1488a6238f0:P=1cd:A=en-devtoken:V=2:H=61ef9345d462ebf92ffc5759ec1d0c9e"
+	auth_token = profile["EVERNOTE_TOKEN"]
 	
-	if auth_token == "your developer token":
-    mic.say("Please, fill in your developer token")
-    exit(1)
-	
-	client = EvernoteClient(token=auth_token, sandbox=True)
+	client = EvernoteClient(token=auth_token, sandbox=False)
 	user_store = client.get_user_store()
 	user = userStore.getUser()
 
