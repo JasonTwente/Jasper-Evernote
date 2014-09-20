@@ -6,7 +6,7 @@ Installation Steps:
         
 2.  Go to https://www.evernote.com/api/DeveloperToken.action and get your developer token. (one year access)
 
-3.  Add the Developer Token key to your profile.yml in jasper/client
+3.  Add the Developer Token to your profile.yml in jasper/client
         EVERNOTE_TOKEN: <your developer token>
         
 4.  In raspberry pi home directory run
