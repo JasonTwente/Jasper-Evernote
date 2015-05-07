@@ -47,9 +47,4 @@ def writeNote(text, mic, note_store):
         mic.say("I successfully wrote down your note.")
 
 def isValid(text):
-        noteBool = bool(re.search(r'\Note\b', text, re.IGNORECASE))
-
-        if noteBool:
-                return noteBool
-        else:
-                return False
+        return bool(re.search(r'\Note\b', text, re.IGNORECASE))
